@@ -24,12 +24,12 @@ const Login = () => {
     mutationFn: loginApi,
 
     onSuccess: (data) => {
-      setAuth(data.access_token, data.user)
+
+      setAuth(data.access_token, data.user);
 
       toast.success("Login successful");
-      navigate("/dashboard", { replace: true });
+      navigate("/projects", { replace: true });
     },
-
     onError: (error) => {
       if (isAxiosError(error)) {
         const message = error.response?.data?.message;
