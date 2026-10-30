@@ -1,0 +1,123 @@
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
+import { useForm } from "react-hook-form";
+const Register = () => {
+    const [showPassword, setShowPassword] = useState(false);
+
+    const { register } = useForm();
+
+
+
+    return (
+        <div className="flex min-h-screen items-center justify-center bg-white px-4 py-12">
+            <div className="w-full max-w-md">
+                {/* Header */}
+                <div className="mb-8 text-center">
+                    <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400 text-xl font-bold text-zinc-900">
+                        A
+                    </div>
+
+                    <h1 className="text-3xl font-bold tracking-tight text-zinc-900">
+                        Create an account
+                    </h1>
+
+                    <p className="mt-2 text-sm text-zinc-500">
+                        Sign up to get started.
+                    </p>
+                </div>
+
+                {/* Form */}
+                <form className="space-y-5">
+                    <div>
+                        <label
+                            htmlFor="name"
+                            className="mb-2 block text-sm font-medium text-zinc-800"
+                        >
+                            Full name
+                        </label>
+
+                        <input
+                            {...register("name")}
+                            name="name"
+                            type="text"
+                            placeholder="Enter your full name"
+                            autoComplete="name"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-100"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            htmlFor="email"
+                            className="mb-2 block text-sm font-medium text-zinc-800"
+                        >
+                            Email address
+                        </label>
+
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="name@example.com"
+                            autoComplete="email"
+                            className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-100"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            htmlFor="password"
+                            className="mb-2 block text-sm font-medium text-zinc-800"
+                        >
+                            Password
+                        </label>
+
+                        <div className="relative">
+                            <input
+                                id="password"
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Create a password"
+                                autoComplete="new-password"
+                                className="w-full rounded-lg border border-zinc-200 bg-white px-4 py-3 pr-12 text-sm text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-lime-500 focus:ring-2 focus:ring-lime-100"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword((prev) => !prev)}
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 transition hover:text-zinc-900"
+                            >
+                                {showPassword ? (
+                                    <EyeOff size={18} />
+                                ) : (
+                                    <Eye size={18} />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    <button
+                        type="submit"
+                        className="w-full rounded-lg bg-lime-400 px-4 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                    >
+                        Create account
+                    </button>
+                </form>
+
+                {/* Footer */}
+                <p className="mt-7 text-center text-sm text-zinc-500">
+                    Already have an account?{" "}
+                    <Link
+                        to="/login"
+                        className="font-semibold text-zinc-900 underline decoration-lime-500 decoration-2 underline-offset-4 hover:text-lime-700"
+                    >
+                        Sign in
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
+};
+
+export default Register;
