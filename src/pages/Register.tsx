@@ -1,19 +1,55 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+import toast from "react-hot-toast";
+
+import {
+    registerApi,
+    type RegisterInput,
+} from "../api/auth/auth.api";
+
 const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
-    const { register } = useForm();
+    const { register, handleSubmit } = useForm<RegisterInput>();
 
+    const mutation = useMutation({
+        mutationFn: registerApi,
 
+        onSuccess: () => {
+            toast.success("Registration successful");
+            navigate("/login");
+        },
+
+        onError: (error) => {
+            if (isAxiosError(error)) {
+                const message = error.response?.data?.message;
+
+                if (Array.isArray(message)) {
+                    message.forEach((item: string) => toast.error(item));
+                    return;
+                }
+
+                toast.error(message || "Registration failed");
+                return;
+            }
+
+            toast.error("Something went wrong");
+        },
+    });
+
+    const handleFormSubmit = (data: RegisterInput) => {
+        mutation.mutate(data);
+    };
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-white px-4 py-12">
             <div className="w-full max-w-md">
-                {/* Header */}
                 <div className="mb-8 text-center">
                     <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-lime-400 text-xl font-bold text-zinc-900">
                         A
@@ -28,8 +64,10 @@ const Register = () => {
                     </p>
                 </div>
 
-                {/* Form */}
-                <form className="space-y-5">
+                <form
+                    className="space-y-5"
+                    onSubmit={handleSubmit(handleFormSubmit)}
+                >
                     <div>
                         <label
                             htmlFor="name"
@@ -40,7 +78,7 @@ const Register = () => {
 
                         <input
                             {...register("name")}
-                            name="name"
+                            id="name"
                             type="text"
                             placeholder="Enter your full name"
                             autoComplete="name"
@@ -57,6 +95,7 @@ const Register = () => {
                         </label>
 
                         <input
+                            {...register("email")}
                             id="email"
                             type="email"
                             placeholder="name@example.com"
@@ -75,6 +114,7 @@ const Register = () => {
 
                         <div className="relative">
                             <input
+                                {...register("password")}
                                 id="password"
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Create a password"
@@ -99,13 +139,20 @@ const Register = () => {
 
                     <button
                         type="submit"
-                        className="w-full rounded-lg bg-lime-400 px-4 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2"
+                        disabled={mutation.isPending}
+                        className="flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-4 py-3 text-sm font-semibold text-zinc-900 transition hover:bg-lime-500 focus:outline-none focus:ring-2 focus:ring-lime-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
                     >
-                        Create account
+                        {mutation.isPending ? (
+                            <>
+                                <span className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-900/30 border-t-zinc-900" />
+                                Creating account...
+                            </>
+                        ) : (
+                            "Create account"
+                        )}
                     </button>
                 </form>
 
-                {/* Footer */}
                 <p className="mt-7 text-center text-sm text-zinc-500">
                     Already have an account?{" "}
                     <Link
