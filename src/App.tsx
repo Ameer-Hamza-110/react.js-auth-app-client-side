@@ -8,7 +8,6 @@ import Projects from "./pages/Projects";
 
 import ProtectedRoute from "./pages/routes/ProtectedRoute";
 
-import Dashboard from "./pages/admin/Dashboard";
 import Unauthorized from "./pages/admin/Unauthorized";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageProjects from "./pages/admin/ManageProjects";
@@ -31,7 +30,6 @@ const App = () => {
         </Route>
       </Route>
 
-      <Route path="/dashboard" element={<Dashboard />} />
       <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/projects" element={<ManageProjects />} />
