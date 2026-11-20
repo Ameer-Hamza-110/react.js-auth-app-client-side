@@ -10,7 +10,6 @@ import ProtectedRoute from "./pages/routes/ProtectedRoute";
 
 import Unauthorized from "./pages/admin/Unauthorized";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import ManageProjects from "./pages/admin/ManageProjects";
 import MainLayout from "./layouts/MainLayout";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -32,7 +31,6 @@ const App = () => {
 
       <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin/projects" element={<ManageProjects />} />
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />} />
