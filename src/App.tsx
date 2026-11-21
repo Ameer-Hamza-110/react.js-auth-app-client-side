@@ -12,7 +12,6 @@ import Unauthorized from "./pages/admin/Unauthorized";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import MainLayout from "./layouts/MainLayout";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
 
 const App = () => {
   return (
@@ -23,7 +22,6 @@ const App = () => {
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
         </Route>

@@ -1,73 +1,60 @@
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
+  User,
+  GraduationCap,
+  Briefcase,
   Code2,
   Database,
-  Globe,
   Layers,
   Lightbulb,
-  Rocket,
+  Sparkles,
 } from "lucide-react";
 
+const highlights = [
+  {
+    icon: Briefcase,
+    title: "Internship Experience",
+    description:
+      "Hands-on experience building real full-stack features with TypeScript, React, Next.js, Express, PostgreSQL, and MySQL.",
+  },
+  {
+    icon: Layers,
+    title: "Full-Stack Mindset",
+    description:
+      "Comfortable moving between frontend interfaces, backend APIs, and database design.",
+  },
+  {
+    icon: Code2,
+    title: "WordPress & Customization",
+    description:
+      "Developing and customizing websites with WordPress when a project needs a fast, content-first solution.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Problem Solver",
+    description:
+      "Passionate about turning real-world problems into clean, scalable, and maintainable code.",
+  },
+];
+
 const skills = [
-  "JavaScript",
-  "TypeScript",
+  "Full-Stack Development",
   "React.js",
   "Next.js",
   "Node.js",
   "Express.js",
-  "NestJS",
-  "MongoDB",
+  "TypeScript",
   "PostgreSQL",
   "MySQL",
-  "Tailwind CSS",
+  "MongoDB",
   "REST APIs",
+  "JWT Authentication",
+  "RBAC",
+  "Tailwind CSS",
   "Git & GitHub",
-];
-
-const projects = [
-  {
-    name: "ShopNest",
-    description:
-      "An e-commerce application with product management, cart, authentication, and an admin dashboard.",
-    stack: "React · Express · PostgreSQL · TypeScript",
-  },
-  {
-    name: "Job Portal",
-    description:
-      "A job portal with employer and applicant dashboards, job listings, and application management.",
-    stack: "Next.js · TypeScript · MySQL",
-  },
-  {
-    name: "MERN Portfolio",
-    description:
-      "A full-stack portfolio application with authentication, REST APIs, and image uploads.",
-    stack: "MongoDB · Express · React · Node.js",
-  },
-];
-
-const services = [
-  {
-    icon: Globe,
-    title: "Frontend",
-    description: "Building responsive and user-friendly web interfaces.",
-  },
-  {
-    icon: Database,
-    title: "Backend",
-    description: "Developing APIs, authentication, and database logic.",
-  },
-  {
-    icon: Layers,
-    title: "Full Stack",
-    description:
-      "Connecting frontend, backend, and databases into complete apps.",
-  },
-  {
-    icon: Lightbulb,
-    title: "Problem Solving",
-    description: "Learning through projects and improving code quality.",
-  },
+  "WordPress",
+  "Cursor",
 ];
 
 const About = () => {
@@ -82,57 +69,58 @@ const About = () => {
 
         <div className="relative mx-auto max-w-3xl px-5 py-20 text-center sm:px-8 sm:py-24">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-lime-200 bg-white px-4 py-1.5 text-xs font-medium text-lime-700 shadow-sm">
-            <Code2 size={14} aria-hidden="true" />
+            <User size={14} aria-hidden="true" />
             Get to know me
           </div>
 
           <h1 className="text-4xl font-bold leading-tight tracking-tight text-zinc-900 sm:text-5xl md:text-6xl">
-            About <span className="text-lime-500">Me.</span>
+            Hi, I'm <span className="text-lime-500">Ameer Hamza.</span>
           </h1>
 
           <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-zinc-500 sm:text-lg">
-            I'm a developer who enjoys turning ideas into practical web
-            applications. I focus on writing clean code, learning modern
-            technologies, and continuously improving my development skills.
+            Junior Full Stack Developer with internship experience building
+            full-stack web applications using TypeScript, React.js, Next.js,
+            Express.js, PostgreSQL, and MySQL — plus WordPress customization.
           </p>
         </div>
       </section>
 
-      {/* ===== MY JOURNEY (stacked, centered) ===== */}
+      {/* ===== MY STORY ===== */}
       <section className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
         <div className="text-center">
           <p className="text-xs font-semibold uppercase tracking-widest text-lime-600">
-            My Journey
+            My Story
           </p>
           <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            Building, learning, and growing as a developer.
+            Passionate about building real, useful things.
           </h2>
         </div>
 
         <div className="mt-8 space-y-4 text-base leading-8 text-zinc-500">
           <p>
-            My interest in web development comes from the ability to build
-            something useful with code. I started with the fundamentals of web
-            development and gradually moved towards frontend and backend
-            technologies.
+            I'm a Junior Full Stack Developer with internship experience
+            building full-stack web applications using TypeScript, React.js,
+            Next.js, Express.js, PostgreSQL, and MySQL. I also develop and
+            customize websites using WordPress when a project calls for it.
           </p>
           <p>
-            I enjoy working across the full stack — creating responsive
-            interfaces, building REST APIs, implementing authentication, and
-            connecting applications with databases.
+            I'm passionate about solving real-world problems through clean,
+            scalable, and maintainable code. I enjoy moving across the stack —
+            from crafting responsive interfaces to wiring up APIs and
+            databases.
           </p>
           <p>
-            I'm also exploring NestJS and improving my understanding of backend
-            architecture and professional development practices.
+            I'm continuously improving my understanding of backend architecture,
+            authentication flows, and professional development practices.
           </p>
         </div>
 
         <div className="mt-9 text-center">
           <Link
-            to="/contact"
+            to="/register"
             className="group inline-flex items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2"
           >
-            Let's Connect
+            Get Started
             <ArrowRight
               size={16}
               aria-hidden="true"
@@ -142,20 +130,20 @@ const About = () => {
         </div>
       </section>
 
-      {/* ===== WHAT I DO (uniform 4-col grid) ===== */}
+      {/* ===== HIGHLIGHTS ===== */}
       <section className="border-t border-zinc-100 bg-zinc-50">
         <div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-lime-600">
-              What I Do
+              What I Bring
             </p>
             <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-              Areas I focus on
+              Highlights from my journey
             </h2>
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {services.map(({ icon: Icon, title, description }) => (
+            {highlights.map(({ icon: Icon, title, description }) => (
               <div
                 key={title}
                 className="rounded-xl border border-zinc-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-lime-300 hover:shadow-md"
@@ -178,14 +166,14 @@ const About = () => {
         <div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-20">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-widest text-lime-600">
-              Technologies
+              Tech Stack
             </p>
             <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-              Tools & Technologies I Work With
+              Skills & Tools I Work With
             </h2>
             <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-zinc-500">
-              Technologies I've used while learning and building full-stack web
-              applications.
+              Technologies I've used while learning, interning, and building
+              full-stack web applications.
             </p>
           </div>
 
@@ -202,62 +190,39 @@ const About = () => {
         </div>
       </section>
 
-      {/* ===== PROJECTS ===== */}
+      {/* ===== FINAL CTA ===== */}
       <section className="border-t border-zinc-100 bg-zinc-50">
-        <div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-20">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-lime-600">
-                Selected Work
-              </p>
-              <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-                Projects I've Built
-              </h2>
-            </div>
+        <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8 sm:py-20">
+          <div className="mx-auto mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-lime-100 text-lime-600">
+            <Sparkles size={22} aria-hidden="true" />
+          </div>
 
+          <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
+            Want to see the app?
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-500">
+            Create an account and explore how the authentication flow works
+            end to end.
+          </p>
+
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
-              to="/projects"
-              className="group inline-flex items-center gap-1.5 text-sm font-semibold text-zinc-700 transition hover:text-lime-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 rounded-md"
+              to="/register"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
             >
-              View all projects
+              Create account
               <ArrowRight
                 size={16}
                 aria-hidden="true"
                 className="transition-transform group-hover:translate-x-1"
               />
             </Link>
-          </div>
-
-          <div className="mt-9 grid gap-4 md:grid-cols-3">
-            {projects.map((project, index) => (
-              <article
-                key={project.name}
-                className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-lime-300 hover:shadow-md"
-              >
-                <div className="mb-4 flex items-center justify-between">
-                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-lime-50 text-lime-600 transition group-hover:bg-lime-100">
-                    <Rocket size={19} aria-hidden="true" />
-                  </div>
-                  <span className="text-[10px] font-semibold uppercase tracking-wider text-zinc-400">
-                    0{index + 1}
-                  </span>
-                </div>
-
-                <h3 className="text-base font-bold text-zinc-900">
-                  {project.name}
-                </h3>
-
-                <p className="mt-2 flex-1 text-sm leading-6 text-zinc-500">
-                  {project.description}
-                </p>
-
-                <div className="mt-4 border-t border-zinc-100 pt-3">
-                  <p className="text-[11px] leading-5 text-zinc-500">
-                    {project.stack}
-                  </p>
-                </div>
-              </article>
-            ))}
+            <Link
+              to="/login"
+              className="inline-flex w-full items-center justify-center rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:border-lime-400 hover:text-lime-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+            >
+              I already have an account
+            </Link>
           </div>
         </div>
       </section>
