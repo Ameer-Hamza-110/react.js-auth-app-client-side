@@ -66,11 +66,7 @@ const Navbar = () => {
             </NavLink>
           ))}
 
-          {isAuthenticated && (
-            <NavLink to="/dashboard" className={navLinkClass}>
-              Dashboard
-            </NavLink>
-          )}
+       
 
           {user?.role === "admin" && (
             <NavLink to="/admin" className={navLinkClass}>
@@ -148,15 +144,7 @@ const Navbar = () => {
               </NavLink>
             ))}
 
-            {isAuthenticated && (
-              <NavLink
-                to="/dashboard"
-                onClick={closeMenu}
-                className={mobileNavLinkClass}
-              >
-                Dashboard
-              </NavLink>
-            )}
+         
 
             {user?.role === "admin" && (
               <NavLink

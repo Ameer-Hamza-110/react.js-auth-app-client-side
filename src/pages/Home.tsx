@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   ArrowRight,
   Lock,
@@ -9,8 +9,11 @@ import {
   CheckCircle2,
   KeyRound,
   Fingerprint,
+  LogOut,
+  LayoutDashboard,
 } from "lucide-react";
 import { useAuthStore } from "../store/auth.store";
+import toast from "react-hot-toast";
 
 const steps = [
   {
@@ -23,7 +26,7 @@ const steps = [
     icon: KeyRound,
     title: "Log in securely",
     description:
-      "Access your dashboard with protected, token-based sessions.",
+      "Access your account with protected, token-based sessions.",
   },
   {
     icon: ShieldCheck,
@@ -52,10 +55,19 @@ const features = [
 ];
 
 const Home = () => {
-  const user = useAuthStore((state) => state.user);
-  const accessToken = useAuthStore((state) => state.accessToken);
+  const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const logout = useAuthStore((s) => s.logout);
 
   const isAuthenticated = !!accessToken && !!user;
+  const isAdmin = user?.role === "admin";
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully");
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,17 +96,36 @@ const Home = () => {
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             {isAuthenticated ? (
-              <Link
-                to={user?.role === "admin" ? "/admin" : "/dashboard"}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
-              >
-                Go to Dashboard
-                <ArrowRight
-                  size={16}
-                  aria-hidden="true"
-                  className="transition-transform group-hover:translate-x-1"
-                />
-              </Link>
+              <>
+                {isAdmin ? (
+                  <Link
+                    to="/admin"
+                    className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+                  >
+                    <LayoutDashboard size={16} aria-hidden="true" />
+                    Open Admin Panel
+                    <ArrowRight
+                      size={16}
+                      aria-hidden="true"
+                      className="transition-transform group-hover:translate-x-1"
+                    />
+                  </Link>
+                ) : (
+                  <div className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-lime-200 bg-lime-50 px-6 py-3 text-sm font-semibold text-lime-800 sm:w-auto">
+                    <CheckCircle2 size={16} aria-hidden="true" />
+                    You're signed in as {user?.name?.split(" ")[0]}
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:border-red-200 hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  <LogOut size={16} aria-hidden="true" />
+                  Log out
+                </button>
+              </>
             ) : (
               <>
                 <Link
@@ -118,20 +149,34 @@ const Home = () => {
             )}
           </div>
 
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-zinc-400">
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-lime-500" aria-hidden="true" />
-              No credit card
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-lime-500" aria-hidden="true" />
-              Free forever
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <CheckCircle2 size={14} className="text-lime-500" aria-hidden="true" />
-              Cancel anytime
-            </span>
-          </div>
+          {!isAuthenticated && (
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs text-zinc-400">
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2
+                  size={14}
+                  className="text-lime-500"
+                  aria-hidden="true"
+                />
+                No credit card
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2
+                  size={14}
+                  className="text-lime-500"
+                  aria-hidden="true"
+                />
+                Free forever
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <CheckCircle2
+                  size={14}
+                  className="text-lime-500"
+                  aria-hidden="true"
+                />
+                Cancel anytime
+              </span>
+            </div>
+          )}
         </div>
       </section>
 
@@ -204,31 +249,61 @@ const Home = () => {
       <section className="border-t border-zinc-100 bg-white">
         <div className="mx-auto max-w-3xl px-5 py-16 text-center sm:px-8 sm:py-20">
           <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">
-            Ready to get started?
+            {isAuthenticated ? "You're all set." : "Ready to get started?"}
           </h2>
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-500">
-            Create your account in seconds and start using Authly today.
+            {isAuthenticated
+              ? "Your account is active and secure. You can log out anytime from here or the footer."
+              : "Create your account in seconds and start using Authly today."}
           </p>
 
           <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              to={isAuthenticated ? "/dashboard" : "/register"}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
-            >
-              {isAuthenticated ? "Open dashboard" : "Create free account"}
-              <ArrowRight
-                size={16}
-                aria-hidden="true"
-                className="transition-transform group-hover:translate-x-1"
-              />
-            </Link>
-            {!isAuthenticated && (
-              <Link
-                to="/login"
-                className="inline-flex w-full items-center justify-center rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:border-lime-400 hover:text-lime-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
-              >
-                I already have an account
-              </Link>
+            {isAuthenticated ? (
+              isAdmin ? (
+                <Link
+                  to="/admin"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  Open Admin Panel
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              ) : (
+                <Link
+                  to="/"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  Back to top
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              )
+            ) : (
+              <>
+                <Link
+                  to="/register"
+                  className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-lime-400 px-6 py-3 text-sm font-semibold text-zinc-900 shadow-sm transition hover:bg-lime-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  Create free account
+                  <ArrowRight
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+                <Link
+                  to="/login"
+                  className="inline-flex w-full items-center justify-center rounded-lg border border-zinc-300 bg-white px-6 py-3 text-sm font-semibold text-zinc-700 transition hover:border-lime-400 hover:text-lime-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2 sm:w-auto"
+                >
+                  I already have an account
+                </Link>
+              </>
             )}
           </div>
         </div>

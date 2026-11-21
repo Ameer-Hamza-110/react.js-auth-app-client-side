@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
-  FolderGit2,
   Mail,
   Users,
   LogOut,
@@ -10,8 +9,10 @@ import {
   X,
   Sparkles,
   ChevronRight,
+  ExternalLink,
 } from "lucide-react";
 import { useAuthStore } from "../../store/auth.store";
+import toast from "react-hot-toast";
 
 const navigation = [
   {
@@ -19,11 +20,6 @@ const navigation = [
     to: "/admin",
     icon: LayoutDashboard,
     end: true,
-  },
-  {
-    name: "Manage Projects",
-    to: "/admin/projects",
-    icon: FolderGit2,
   },
   {
     name: "Messages",
@@ -40,14 +36,18 @@ const navigation = [
 const AdminDashboard = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
+  const user = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const closeSidebar = () => setSidebarOpen(false);
+
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    closeSidebar();
+    toast.success("Logged out successfully");
+    navigate("/login", { replace: true });
   };
 
   const currentPage =
@@ -65,7 +65,7 @@ const AdminDashboard = () => {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-lime-400 text-zinc-900">
             <Sparkles size={16} aria-hidden="true" />
           </div>
-          <span className="text-sm font-bold text-zinc-900">Admin</span>
+          <span className="text-sm font-bold text-zinc-900">Authly Admin</span>
         </Link>
 
         <button
@@ -85,30 +85,26 @@ const AdminDashboard = () => {
           <button
             type="button"
             aria-label="Close sidebar"
-            onClick={() => setSidebarOpen(false)}
+            onClick={closeSidebar}
             className="fixed inset-0 z-40 bg-zinc-900/40 backdrop-blur-sm lg:hidden"
           />
         )}
 
         {/* ===== SIDEBAR ===== */}
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-64 transform border-r border-zinc-200 bg-white transition-transform duration-200 ease-in-out lg:sticky lg:top-0 lg:z-0 lg:h-screen lg:translate-x-0 ${
+          className={`fixed inset-y-0 left-0 z-50 flex w-64 flex-col transform border-r border-zinc-200 bg-white transition-transform duration-200 ease-in-out lg:sticky lg:top-0 lg:z-0 lg:h-screen lg:translate-x-0 ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           {/* Brand */}
-          <div className="flex h-16 items-center justify-between border-b border-zinc-100 px-5">
-            <Link
-              to="/admin"
-              className="flex items-center gap-2.5"
-              onClick={() => setSidebarOpen(false)}
-            >
+          <div className="flex h-16 shrink-0 items-center justify-between border-b border-zinc-100 px-5">
+            <Link to="/admin" className="flex items-center gap-2.5" onClick={closeSidebar}>
               <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-lime-400 text-zinc-900">
                 <Sparkles size={18} aria-hidden="true" />
               </div>
               <div>
                 <p className="text-sm font-bold leading-none text-zinc-900">
-                  Portfolio
+                  Authly
                 </p>
                 <p className="mt-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-400">
                   Admin Panel
@@ -118,16 +114,19 @@ const AdminDashboard = () => {
 
             <button
               type="button"
-              onClick={() => setSidebarOpen(false)}
+              onClick={closeSidebar}
               aria-label="Close menu"
-              className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 lg:hidden"
+              className="rounded-lg p-1.5 text-zinc-500 hover:bg-zinc-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 lg:hidden"
             >
               <X size={18} />
             </button>
           </div>
 
           {/* Nav */}
-          <nav className="flex flex-col gap-1 p-3" aria-label="Admin">
+          <nav
+            className="flex flex-1 flex-col gap-1 overflow-y-auto p-3"
+            aria-label="Admin navigation"
+          >
             {navigation.map(({ name, to, icon: Icon, end }) => {
               const active = end
                 ? location.pathname === to
@@ -137,7 +136,7 @@ const AdminDashboard = () => {
                 <Link
                   key={to}
                   to={to}
-                  onClick={() => setSidebarOpen(false)}
+                  onClick={closeSidebar}
                   aria-current={active ? "page" : undefined}
                   className={`group flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition ${
                     active
@@ -169,10 +168,10 @@ const AdminDashboard = () => {
             })}
           </nav>
 
-          {/* Footer / User */}
-          <div className="absolute inset-x-0 bottom-0 border-t border-zinc-100 p-3">
+          {/* User + Logout */}
+          <div className="shrink-0 border-t border-zinc-100 p-3">
             <div className="mb-2 flex items-center gap-3 rounded-lg bg-zinc-50 px-3 py-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-lime-100 text-xs font-bold text-lime-800">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lime-100 text-xs font-bold text-lime-800">
                 {user?.name?.[0]?.toUpperCase() ?? "A"}
               </div>
               <div className="min-w-0 flex-1">
@@ -199,12 +198,10 @@ const AdminDashboard = () => {
         {/* ===== MAIN CONTENT ===== */}
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Desktop top bar */}
-          <header className="hidden border-b border-zinc-200 bg-white px-6 py-4 lg:block">
+          <header className="sticky top-0 z-30 hidden border-b border-zinc-200 bg-white/95 backdrop-blur px-6 py-4 lg:block">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-lg font-bold text-zinc-900">
-                  {currentPage}
-                </h1>
+                <h1 className="text-lg font-bold text-zinc-900">{currentPage}</h1>
                 <p className="text-xs text-zinc-500">
                   Welcome back, {user?.name ?? "Admin"} 👋
                 </p>
@@ -212,12 +209,18 @@ const AdminDashboard = () => {
 
               <Link
                 to="/"
-                className="text-xs font-medium text-zinc-500 transition hover:text-lime-700"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-medium text-zinc-600 transition hover:border-lime-300 hover:bg-lime-50 hover:text-lime-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-600 focus-visible:ring-offset-2"
               >
-                ← Back to site
+                <ExternalLink size={13} aria-hidden="true" />
+                Back to site
               </Link>
             </div>
           </header>
+
+          {/* Mobile page title (since desktop header is hidden) */}
+          <div className="border-b border-zinc-100 bg-white px-4 py-3 lg:hidden">
+            <h1 className="text-base font-bold text-zinc-900">{currentPage}</h1>
+          </div>
 
           {/* Page content */}
           <main className="flex-1 p-4 sm:p-6 lg:p-8">
