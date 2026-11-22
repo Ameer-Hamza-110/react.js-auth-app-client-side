@@ -1,4 +1,3 @@
-
 import { Route, Routes, Navigate } from "react-router-dom";
 
 import Register from "./pages/Register";
@@ -10,15 +9,20 @@ import ProtectedRoute from "./pages/routes/ProtectedRoute";
 
 import Unauthorized from "./pages/admin/Unauthorized";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminUsers from "./pages/admin/AdminUsers";
+
+
 import MainLayout from "./layouts/MainLayout";
 import About from "./pages/About";
 
 const App = () => {
   return (
     <Routes>
+      {/* Public */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
+      {/* Authenticated app */}
       <Route element={<ProtectedRoute />}>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -27,8 +31,11 @@ const App = () => {
         </Route>
       </Route>
 
+      {/* Admin (nested under AdminDashboard) */}
       <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />}>
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
       </Route>
 
       <Route path="/unauthorized" element={<Unauthorized />} />

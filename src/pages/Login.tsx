@@ -28,7 +28,7 @@ const Login = () => {
       setAuth(data.access_token, data.user);
 
       toast.success("Login successful");
-      navigate("/projects", { replace: true });
+      navigate("/", { replace: true });
     },
     onError: (error) => {
       if (isAxiosError(error)) {
