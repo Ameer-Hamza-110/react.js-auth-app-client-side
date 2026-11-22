@@ -3,7 +3,6 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
 
 import ProtectedRoute from "./pages/routes/ProtectedRoute";
 
@@ -27,7 +26,6 @@ const App = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
         </Route>
       </Route>
 

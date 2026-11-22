@@ -2,10 +2,8 @@ import { Link } from "react-router-dom";
 import {
   ArrowRight,
   User,
-  GraduationCap,
   Briefcase,
   Code2,
-  Database,
   Layers,
   Lightbulb,
   Sparkles,
